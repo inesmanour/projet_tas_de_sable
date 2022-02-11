@@ -36,11 +36,11 @@ def configuration_courante():
 fenetre = Tk()
 fenetre.title("Tas de sable")
 canvas = Canvas(fenetre, height=HAUTEUR, width=LARGEUR)
-b = Button(fenetre, text = "test")
+b = Button(fenetre, text = "test", width=20, height=10, bg="black", fg="White" )
 
 #Placement des widgets
 canvas.grid(column=1, row=0)
-b.grid(column=0, row=1)
+b.grid(column=1, row=0)
 
 #Boucle principale
 fenetre.mainloop()

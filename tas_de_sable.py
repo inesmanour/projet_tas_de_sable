@@ -1,6 +1,6 @@
 #########################################
 # informations liées au groupe
-#groupe LDDBI
+# groupe LDDBI
 # LAURA LEFEVRE
 # ADAM KEDDIS
 # MANOUR INES 
@@ -11,8 +11,11 @@ from tkinter import *
 
 
 #########################################
-# définition des constantes (écrites en majuscule)
+# définition des constantes
+
+# hauteur du canevas 
 HAUTEUR = 600
+# largeur du canevas
 LARGEUR = 600 
 
 #########################################
@@ -26,20 +29,14 @@ LARGEUR = 600
 # partie principale 
 
 
-
-
-
 # Création des widgets 
 FENETRE = Tk()
 FENETRE.title("Tas de sable")
 canvas = Canvas(FENETRE, height=HAUTEUR, width=LARGEUR)
+
+#Placement des widgets
 canvas.grid(column=1, row=0)
-#########################################
-#programme principal contenant la définition des widgets et des événements qui leur sont liés et
-#l’appel à la boucle de gestion des événements
 
-
-#########################################
-
+#Boucle principale
 FENETRE.mainloop()
 

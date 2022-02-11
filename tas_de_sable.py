@@ -23,7 +23,7 @@ LARGEUR = 600
 
 
 #########################################
-# définition des fonctions (chaque fonction devra contenir une docstring)
+# définition des fonctions
 
 def configuration_courante():
     pass
@@ -40,7 +40,7 @@ b = Button(fenetre, text = "test")
 
 #Placement des widgets
 canvas.grid(column=1, row=0)
-b.grid(column=0, row=1)
+b.grid(column=1, row=1)
 
 #Boucle principale
 fenetre.mainloop()

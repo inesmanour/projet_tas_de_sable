@@ -25,18 +25,23 @@ LARGEUR = 600
 #########################################
 # définition des fonctions (chaque fonction devra contenir une docstring)
 
+def configuration_courante():
+    pass
+
 #########################################
 # partie principale 
 
 
 # Création des widgets 
-FENETRE = Tk()
-FENETRE.title("Tas de sable")
-canvas = Canvas(FENETRE, height=HAUTEUR, width=LARGEUR)
+fenetre = Tk()
+fenetre.title("Tas de sable")
+canvas = Canvas(fenetre, height=HAUTEUR, width=LARGEUR)
+b = Button(fenetre, text = "test")
 
 #Placement des widgets
 canvas.grid(column=1, row=0)
+b.grid(column=0, row=1)
 
 #Boucle principale
-FENETRE.mainloop()
+fenetre.mainloop()
 

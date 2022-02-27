@@ -15,6 +15,8 @@ from tkinter import *
 from random import *
 from functools import partial
 
+from attr import NOTHING
+
 #########################################
 # constantes
 
@@ -81,7 +83,39 @@ def random_config(n):
     global config_courante
     for ligne in range(n):
         for colonne in range(n):
-            config_courante[ligne][colonne] += randint(0,3)
+            config_courante[ligne][colonne] = randint(0,3)  # il faut écraser la variable et pas l'additionner !!!
+    maj_grille(n)
+
+
+
+
+
+" creation d'une configuration par click de l'utilisateur "
+
+def clic(event):
+    ''' fonction permettant d'ajouter 1 grain de sable sur la case clickée'''
+    global x, y 
+    x, y = event.x, event.y
+    x=int(x/12)
+    y= int(y /12)
+   
+    print(x,y)
+    config_courante[y][x] += 1 
+
+    maj_grille(n)
+
+def clic2(event): 
+    ''' fonction permettant de soustraire 1 grain de sable sur la case clickée'''
+    global x, y 
+    x, y = event.x, event.y
+    x=int(x/12)
+    y= int(y /12)
+
+    if config_courante[y][x] > 0 :
+        config_courante[y][x] -= 1 
+    else :
+       x=(NOTHING) 
+
     maj_grille(n)
 
 #########################################
@@ -93,11 +127,15 @@ fenetre = Tk()
 fenetre.title("Projet 1 : Tas de sable")
 canevas = Canvas(fenetre, height=HAUTEUR, width=LARGEUR, bg = "snow")
 boutton_random_config = Button(fenetre, text = "Configuration aléatoire", width=20, height=10, bg="moccasin", fg="darksalmon", command = partial(random_config, n))
+canevas.bind("<Button-1>", clic) 
+canevas.bind("<Button-2>", clic2)
 
 # placement des widgets
 canevas.grid(column=1, row=0, columnspan = 2, padx = 3, pady = 3)
 boutton_random_config.grid(column=0, row=0)
 
+
+ 
 # boucle principale
 tas_de_sable(n)
-fenetre.mainloop()
+fenetre.mainloop() 

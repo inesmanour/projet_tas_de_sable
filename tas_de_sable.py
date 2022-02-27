@@ -90,10 +90,10 @@ def random_config(n):
 
 
 
-" creation d'une configuration par click de l'utilisateur "
+" creation d'une configuration par clic de l'utilisateur "
 
 def clic(event):
-    ''' fonction permettant d'ajouter 1 grain de sable sur la case clickée'''
+    ''' fonction permettant d'ajouter 1 grain de sable sur la case cliquée avec un clic gauche'''
     global x, y 
     x, y = event.x, event.y
     x=int(x/12)
@@ -105,7 +105,7 @@ def clic(event):
     maj_grille(n)
 
 def clic2(event): 
-    ''' fonction permettant de soustraire 1 grain de sable sur la case clickée'''
+    ''' fonction permettant de soustraire 1 grain de sable sur la case cliquée avec un clic droit'''
     global x, y 
     x, y = event.x, event.y
     x=int(x/12)

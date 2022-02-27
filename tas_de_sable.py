@@ -101,3 +101,4 @@ boutton_random_config.grid(column=0, row=0)
 # boucle principale
 tas_de_sable(n)
 fenetre.mainloop()
+#h

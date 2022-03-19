@@ -15,7 +15,7 @@ from tkinter import *
 from random import *
 from functools import partial
 
-from attr import NOTHING
+
 
 #########################################
 # constantes

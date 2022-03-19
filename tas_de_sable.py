@@ -3,8 +3,8 @@
 # groupe LDDBI
 # LAURA LEFEVRE
 # ADAM KEDDIS
-# MANOUR INES 
-#https://github.com/uvsq22103405/projet_tas_de_sable.git
+# MANOUR INES
+# https://github.com/uvsq22103405/projet_tas_de_sable.git
 
 #########################################
 # import des librairies
@@ -16,31 +16,98 @@ from random import *
 from functools import partial
 from winreg import REG_OPENED_EXISTING_KEY
 
-
 #########################################
 # constantes
 
-# hauteur du canevas 
+# hauteur du canevas
 HAUTEUR = 600
 # largeur du canevas
-LARGEUR = 600 
-
+LARGEUR = 600
+# boucle avalanche
+boucle = False
 #########################################
 # variables globales
 
-#Cases de la grille
+# Cases de la grille
 cases = []
-#constante de proportionnalité
+# constante de proportionnalité
 n = 50
-#configuration du canevas stockée dans une liste a deux dimensions
+# configuration du canevas stockée dans une liste a deux dimensions
 config_courante = []
+
 
 #########################################
 # fonctions
 def tas_de_sable(n):
     '''Fonction intermédiaire pour lancer le programme tas de sable'''
     configuration_courante_vide(n)
+def verif_sable(n):
+    global boucle
+    for ligne in range(n):
+        for colonne in range(n):
+            if config_courante[ligne][colonne] > 3 :
+                boucle = True
+            else:
+                boucle = False
 
+
+def avalanche(n):
+    '''Fonction qui lance l'avalanche'''
+    global boucle
+    for ligne in range(n):
+        for colonne in range(n):
+            if config_courante[ligne][colonne] > 3 and ligne != 1 and ligne != 49 and colonne != 1 and colonne != 49:
+                config_courante[ligne][colonne] -= 4
+                config_courante[ligne - 1 ][colonne] += 1
+                config_courante[ligne + 1 ][colonne] += 1
+                config_courante[ligne][colonne + 1] += 1
+                config_courante[ligne][colonne - 1] += 1
+                maj_grille(n)
+            if config_courante[ligne][colonne] > 3 and ligne == 1 and colonne == 1 :
+                config_courante[ligne][colonne] -= 2
+                config_courante[ligne + 1 ][colonne] += 1
+                config_courante[ligne][colonne + 1 ] += 1
+                maj_grille(n)
+            if config_courante[ligne][colonne] > 3 and ligne == 1 and colonne == 49 :
+                config_courante[ligne][colonne] -= 2
+                config_courante[ligne + 1][colonne] += 1
+                config_courante[ligne][colonne - 1 ] += 1
+                maj_grille(n)
+            if config_courante[ligne][colonne] > 3 and ligne == 49 and colonne == 1 :
+                config_courante[ligne][colonne] -= 2
+                config_courante[ligne - 1 ][colonne] += 1
+                config_courante[ligne][colonne + 1 ] += 1
+                maj_grille(n)
+            if config_courante[ligne][colonne] > 3 and ligne == 49 and colonne == 49 :
+                config_courante[ligne][colonne] -= 2
+                config_courante[ligne - 1][colonne] += 1
+                config_courante[ligne][colonne - 1 ] += 1
+                maj_grille(n)
+
+            if config_courante[ligne][colonne] > 3 and ligne == 1 and colonne != 1 and colonne != 49:
+                config_courante[ligne][colonne] -= 3
+                config_courante[ligne + 1 ][colonne] += 1
+                config_courante[ligne][colonne + 1 ] += 1
+                config_courante[ligne][colonne - 1 ] += 1
+                maj_grille(n)
+            if config_courante[ligne][colonne] > 3 and ligne == 49 and colonne != 1 and colonne != 49:
+                config_courante[ligne][colonne] -= 3
+                config_courante[ligne - 1 ][colonne] += 1
+                config_courante[ligne][colonne + 1 ] += 1
+                config_courante[ligne][colonne - 1 ] += 1
+                maj_grille(n)
+            if config_courante[ligne][colonne] > 3 and colonne == 1 and ligne != 1 and ligne != 49:
+                config_courante[ligne][colonne] -= 3
+                config_courante[ligne + 1 ][colonne] += 1
+                config_courante[ligne - 1 ][colonne] += 1
+                config_courante[ligne][colonne + 1 ] += 1
+                maj_grille(n)
+            if config_courante[ligne][colonne] > 3 and colonne == 1 and ligne != 1 and ligne != 49:
+                config_courante[ligne][colonne] -= 3
+                config_courante[ligne + 1 ][colonne] += 1
+                config_courante[ligne - 1 ][colonne] += 1
+                config_courante[ligne][colonne - 1 ] += 1
+                maj_grille(n)
 def configuration_courante_vide(n):
     '''Initialise la configuration conrante vide'''
     global config_courante
@@ -51,95 +118,128 @@ def configuration_courante_vide(n):
 
     grille(n)
 
+
 def grille(n):
     '''Fonctions qui affiche la grille '''
-    c = HAUTEUR/n
+    c = HAUTEUR / n
     global cases
     for ligne in range(n):
         transit = []
         for colonne in range(n):
-            transit.append(canevas.create_rectangle(colonne*c+2, ligne*c+2, (colonne+1)*c+2, (ligne+1)*c+2))
+            transit.append(
+                canevas.create_rectangle(colonne * c + 2, ligne * c + 2, (colonne + 1) * c + 2, (ligne + 1) * c + 2))
         cases.append(transit)
-    
+
     maj_grille(n)
+
 
 def maj_grille(n):
     '''Fonction qui met à jour la grille en fonction de la configuration courante'''
     for ligne in range(n):
         for colonne in range(n):
             if config_courante[ligne][colonne] == 0:
-                canevas.itemconfigure(cases[ligne][colonne], fill = 'black', outline = 'white')    # noir pour 0 grain
+                canevas.itemconfigure(cases[ligne][colonne], fill='black', outline='white')  # noir pour 0 grain
+
+
             elif config_courante[ligne][colonne] == 1:
-                canevas.itemconfigure(cases[ligne][colonne], fill = 'yellow', outline = 'white')   # jaune pour 1 grain
+                canevas.itemconfigure(cases[ligne][colonne], fill='yellow', outline='white')  # jaune pour 1 grain
+
+
             elif config_courante[ligne][colonne] == 2:
-                canevas.itemconfigure(cases[ligne][colonne], fill = 'green', outline = 'white')    # vert pour 2 grains
+                canevas.itemconfigure(cases[ligne][colonne], fill='green', outline='white')  # vert pour 2 grains
+
+
             elif config_courante[ligne][colonne] == 3:
-                canevas.itemconfigure(cases[ligne][colonne], fill = 'blue', outline = 'white')     # bleu pour 3 grains
-            else :
-                canevas.itemconfigure(cases[ligne][colonne], fill = 'red', outline = 'white')      #rouge provisoirement quand il y a plus de 3 grains
+                canevas.itemconfigure(cases[ligne][colonne], fill='blue', outline='white')  # bleu pour 3 grains
+
+
+            else:
+                canevas.itemconfigure(cases[ligne][colonne], fill='red',
+                                      outline='white')  # rouge provisoirement quand il y a plus de 3 grains
+
+
 
 def random_config(n):
     ''' Fonction qui initialise une configuration aléatoire : ajoute entre 0 et n grains de sable à chaque case'''
     global config_courante
     for ligne in range(n):
         for colonne in range(n):
-            config_courante[ligne][colonne] = randint(0,3)  # il faut écraser la variable et pas l'additionner !!!
+            config_courante[ligne][colonne] = randint(0, 3)  # il faut écraser la variable et pas l'additionner !!!
     maj_grille(n)
-
-
-
 
 
 " creation d'une configuration par clic de l'utilisateur "
 
+
 def clic(event):
     ''' fonction permettant d'ajouter 1 grain de sable sur la case cliquée avec un clic gauche'''
-    global x, y 
+    global x, y
     x, y = event.x, event.y
-    x=int(x/12)
-    y= int(y /12)
-   
-    print(x,y)
-    config_courante[y][x] += 1 
+    x = int(x / 12)
+    y = int(y / 12)
+
+    print(x, y)
+    config_courante[y][x] += 1
 
     maj_grille(n)
 
-def clic2(event): 
+
+def clic2(event):
     ''' fonction permettant de soustraire 1 grain de sable sur la case cliquée avec un clic droit'''
-    global x, y 
+    global x, y
     x, y = event.x, event.y
-    x=int(x/12)
-    y= int(y /12)
+    x = int(x / 12)
+    y = int(y / 12)
     print("cc")
 
-    if config_courante[y][x] > 0 :
-        config_courante[y][x] -= 1 
-    else :
-       pass
+    if config_courante[y][x] > 0:
+        config_courante[y][x] -= 1
+    else:
+        pass
 
     maj_grille(n)
-def essaye(event):
-    print(event.x)
+def addition(n):
+    '''Fonction qui permet d'ajouter aléatoirement des grains de sables'''
+    for ligne in range(n):
+        for colonne in range(n):
+            config_courante[ligne][colonne] += randint(0,3)
+    maj_grille(n)
+def soustraction(n):
+    '''Fonction qui permet d'enlever aléatoirement des grains de sables'''
+    for ligne in range(n):
+        for colonne in range(n):
+            config_courante[ligne][colonne] -= randint(0,3)
+            if config_courante[ligne][colonne] < 0:
+                config_courante[ligne][colonne] = 0
+    maj_grille(n)
+
+
+
 #########################################
-# partie principale 
+# partie principale
 
 
-# création des widgets 
+# création des widgets
 fenetre = Tk()
 fenetre.title("Projet 1 : Tas de sable")
-canevas = Canvas(fenetre, height=HAUTEUR, width=LARGEUR, bg = "snow")
-boutton_random_config = Button(fenetre, text = "Configuration aléatoire", width=20, height=10, bg="moccasin", fg="darksalmon", command = partial(random_config, n))
-boutton_addition = Button(fenetre, text= "Addition", width=20, height=10, bg="moccasin", fg="darksalmon")
-canevas.bind("<Button-1>", clic) 
-canevas.bind("<Button-2>", essaye)
+canevas = Canvas(fenetre, height=HAUTEUR, width=LARGEUR, bg="snow")
+boutton_random_config = Button(fenetre, text="Configuration aléatoire", width=17, height=3, bg="moccasin",
+                               fg="black", command=partial(random_config, n))
+boutton_addition = Button(fenetre, text="Addition", width=10, height=3, bg="moccasin", fg="black",
+                          command=partial(addition, n))
+boutton_soustraction = Button(fenetre, text="Soustraction", width=10, height=3, bg="moccasin", fg="black",
+                          command=partial(soustraction, n))
+canevas.bind("<Button-1>", clic)
+canevas.bind("<Button-2>", clic2)
+boutton_avalanche = Button(fenetre, text="Avalanche", width=17, height=3, bg="moccasin", fg="black", command=partial(avalanche, n))
 
 # placement des widgets
-canevas.grid(column=1, row=0, columnspan = 2, padx = 3, pady = 3)
-boutton_random_config.grid(column=0, row=0)
+canevas.grid(column=1, row=0, columnspan=2, rowspan=5, padx=3, pady=3)
+boutton_random_config.grid(column=0, row=0, )
 boutton_addition.grid(column=0, row=1)
+boutton_soustraction.grid(column=0, row=2)
+boutton_avalanche.grid(column=0, row=3)
 
-
- 
 # boucle principale
 tas_de_sable(n)
-fenetre.mainloop() 
+fenetre.mainloop()
